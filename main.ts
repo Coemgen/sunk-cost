@@ -12,7 +12,8 @@ const Utils = (function () {
    */
   function usdToNum(usd: string): number {
     let matchArr: RegExpMatchArray | null;
-    matchArr = usd.match(/^\$(\d+)(,(\d{3}))*(.\d+)?\sBillion$/);
+    let numArr: string[];
+    matchArr = usd.match(/^\$(\d+)(,(\d{3}))?(.\d+)?\sBillion$/);
     if (matchArr) {
       return (
         Number(
@@ -20,7 +21,7 @@ const Utils = (function () {
         ) * 1000000000
       );
     }
-    matchArr = usd.match(/^\$(\d+)(,(\d{3}))*(.\d+)?\sMillion$/);
+    matchArr = usd.match(/^\$(\d+)(,(\d{3}))?(.\d+)?\sMillion$/);
     if (matchArr) {
       return (
         Number(
@@ -30,9 +31,8 @@ const Utils = (function () {
     }
     matchArr = usd.match(/^\$(\d+)(,(\d{3}))*(.\d+)?$/);
     if (matchArr) {
-      return Number(
-        (matchArr[1] || "") + (matchArr[3] || "") + (matchArr[4] || "")
-      );
+      numArr = usd.slice(1).split(",");
+      return Number(numArr.join(""));
     }
     matchArr = usd.match(/^\d+$/);
     if (matchArr) {
@@ -41,7 +41,41 @@ const Utils = (function () {
 
     return Number(usd);
   }
+
+  /**
+   * @function numToUsd
+   * @param {number} num
+   * @memberof! Utils
+   * @returns {string}
+   */
+  function numToUsd(num: number): string {
+    let matchArr: RegExpMatchArray | null;
+    if (num < 1000000) {
+      return num.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      });
+    }
+    matchArr = num
+      .toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+        notation: "compact",
+        compactDisplay: "short",
+        minimumSignificantDigits: 3,
+        maximumFractionDigits: 2,
+      })
+      .match(/^(\$\d+)(\.\d+)?([MB])$/);
+    if (matchArr) {
+      return matchArr[1] + (matchArr[2] || "") + " " + matchArr[3] + "illion  ";
+    }
+    return "";
+  }
+
   return Object.freeze({
+    numToUsd,
     usdToNum,
   });
 })();
@@ -140,19 +174,20 @@ class Drawings {
   }
 }
 
-const drawings = new Drawings(DRAWINGS);
-drawings
-  .getData("powerball")
-  .slice(-10)
-  .forEach(function (arr, index) {
-    const gameDraw = new PowerballDrawing(arr);
-    $("tbody tr:eq(" + index + ") td:eq(0)").html(
-      gameDraw.drawDate.toDateString()
-    );
-    $("tbody tr:eq(" + index + ") td:eq(2)").html(
-      gameDraw.jackpot.toLocaleString("en-US", {
-        style: "currency",
-        currency: "USD",
-      })
-    );
-  });
+function main() {
+  const drawings = new Drawings(DRAWINGS);
+  drawings
+    .getData("powerball")
+    .slice(-10)
+    .forEach(function (arr, index) {
+      const gameDraw = new PowerballDrawing(arr);
+      $("tbody tr:eq(" + index + ") td:eq(0)").html(
+        gameDraw.drawDate.toDateString()
+      );
+      $("tbody tr:eq(" + index + ") td:eq(2)").html(
+        Utils.numToUsd(gameDraw.jackpot)
+      );
+    });
+}
+
+$(main);
