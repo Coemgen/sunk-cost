@@ -19,3 +19,12 @@ yarn-error.log
 
 # chrome debug
 debug.log
+
+# typedoc
+docs/
+
+# fake data
+data/
+
+# JavaScript is compiled by the TypeScript compiler
+js/
