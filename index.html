@@ -54,13 +54,13 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav me-auto mb-2 mb-md-0">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="#">Dashboard</a>
+              <a class="nav-link" href="#">Dashboard</a>
             </li>
             <li class="nav-item">
               <a class="nav-link active" href="#">Drawings</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Results</a>
+              <a class="nav-link disabled" href="#">Results</a>
             </li>
           </ul>
         </div>
@@ -70,21 +70,23 @@
     <main class="container">
       <div class="row">
         <div class="col-sm-12">
-          <ul class="nav nav-pills">
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="#">Lucky for Life</a>
+          <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab">
+                Lucky for Life
+              </button>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Mass Cash</a>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" data-bs-toggle="pill" type="button" role="tab">Mass Cash</button>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Mega Millions</a>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" data-bs-toggle="pill" type="button" role="tab" onclick="main2()">Mega Millions</button>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Megabucks</a>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" data-bs-toggle="pill" type="button" role="tab">Megabucks</button>
             </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="#" tabindex="-1" aria-disabled="true">Powerball</a>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" data-bs-toggle="pill" type="button" role="tab" onclick="main()">Powerball</button>
             </li>
           </ul>
         </div>
