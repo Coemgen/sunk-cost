@@ -24,3 +24,8 @@ caption {
   text-align: center;
   min-width: 2em;
 }
+
+.ball,
+.bonus {
+  max-width: 3em;
+}

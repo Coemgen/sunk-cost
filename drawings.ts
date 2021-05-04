@@ -1,5 +1,5 @@
 class Drawing {
-  gameName: GameNames;
+  gameName: GameName;
   drawDate: Date;
   winningNumbers: number[];
   jackpot: number;
@@ -8,7 +8,7 @@ class Drawing {
   nextDrawDate: Date;
   estimatedJackpot: number;
 
-  constructor(gameName: GameNames, rawData: string[]) {
+  constructor(gameName: GameName, rawData: string[]) {
     this.gameName = gameName;
     this.drawDate = new Date(rawData[0]);
     this.winningNumbers = rawData[1].split("-").map((numStr) => Number(numStr));
@@ -39,10 +39,10 @@ class Drawings {
     this.megabucksDoubler = rawData.megabucksdoubler;
     this.powerball = rawData.powerball;
   }
-  getData(game: GameNames) {
+  getData(game: GameName) {
     return this[game].slice(1);
   }
-  getHeader(game: GameNames) {
+  getHeader(game: GameName) {
     return this[game][0];
   }
 }
