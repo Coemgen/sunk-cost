@@ -72,21 +72,30 @@
         <div class="col-sm-12">
           <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
-              <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab">
+              <button
+                class="nav-link active"
+                data-bs-toggle="pill"
+                data-bs-target="#pills-home"
+                type="button"
+                role="tab"
+                onclick="main('luckyForLife')"
+              >
                 Lucky for Life
               </button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" data-bs-toggle="pill" type="button" role="tab">Mass Cash</button>
+              <button class="nav-link" data-bs-toggle="pill" type="button" role="tab" onclick="main('massCash')">Mass Cash</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" data-bs-toggle="pill" type="button" role="tab" onclick="main2()">Mega Millions</button>
+              <button class="nav-link" data-bs-toggle="pill" type="button" role="tab" onclick="main('megaMillions')">Mega Millions</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" data-bs-toggle="pill" type="button" role="tab">Megabucks</button>
+              <button class="nav-link" data-bs-toggle="pill" type="button" role="tab" onclick="main('megabucksDoubler')">
+                Megabucks Doubler
+              </button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" data-bs-toggle="pill" type="button" role="tab" onclick="main()">Powerball</button>
+              <button class="nav-link" data-bs-toggle="pill" type="button" role="tab" onclick="main('powerball')">Powerball</button>
             </li>
           </ul>
         </div>
@@ -232,6 +241,9 @@
     ></script>
 
     <script src="data/drawings.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/games.js"></script>
+    <script src="js/drawing.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

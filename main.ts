@@ -1,136 +1,13 @@
 declare const DRAWINGS: any;
 
-/**
- * @namespace Utils
- */
-const Utils = (function () {
-  /**
-   * @function usdToNum
-   * @param {string} usd
-   * @memberof! Utils
-   * @returns {number}
-   */
-  function usdToNum(usd: string): number {
-    let matchArr: RegExpMatchArray | null;
-    let numArr: string[];
-    matchArr = usd.match(/^\$(\d+)(,(\d{3}))?(.\d+)?\sBillion$/);
-    if (matchArr) {
-      return (
-        Number(
-          (matchArr[1] || "") + (matchArr[3] || "") + (matchArr[4] || "")
-        ) * 1000000000
-      );
-    }
-    matchArr = usd.match(/^\$(\d+)(,(\d{3}))?(.\d+)?\sMillion$/);
-    if (matchArr) {
-      return (
-        Number(
-          (matchArr[1] || "") + (matchArr[3] || "") + (matchArr[4] || "")
-        ) * 1000000
-      );
-    }
-    matchArr = usd.match(/^\$(\d+)(,(\d{3}))*(.\d+)?$/);
-    if (matchArr) {
-      numArr = usd.slice(1).split(",");
-      return Number(numArr.join(""));
-    }
-    matchArr = usd.match(/^\d+$/);
-    if (matchArr) {
-      return Number(matchArr[0]);
-    }
-
-    return Number(usd);
+function getGameDrawing(gameName: GameNames, drawArray: string[]) {
+  if (gameName === "megaMillions") {
+    return new MegaMillionsDrawing(drawArray);
   }
-
-  /**
-   * @function numToUsd
-   * @param {number} num
-   * @memberof! Utils
-   * @returns {string}
-   */
-  function numToUsd(num: number): string {
-    let matchArr: RegExpMatchArray | null;
-    if (num < 1000000) {
-      return num.toLocaleString("en-US", {
-        style: "currency",
-        currency: "USD",
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      });
-    }
-    matchArr = num
-      .toLocaleString("en-US", {
-        style: "currency",
-        currency: "USD",
-        notation: "compact",
-        compactDisplay: "short",
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2,
-      })
-      .match(/^(\$\d+)(\.\d+)?([MB])$/);
-    if (matchArr) {
-      return matchArr[1] + (matchArr[2] || "") + " " + matchArr[3] + "illion  ";
-    }
-    return "";
+  if (gameName === "powerball") {
+    return new PowerballDrawing(drawArray);
   }
-
-  return Object.freeze({
-    numToUsd,
-    usdToNum,
-  });
-})();
-
-class Drawing {
-  gameName: string;
-  drawDate: Date;
-  winningNumbers: number[];
-  jackpot: number;
-  nextDrawDate: Date;
-  estimatedJackpot: number;
-
-  constructor(
-    gameName: string,
-    drawDate: string,
-    winningNumbers: string,
-    jackpot: string,
-    nextDrawDate: string,
-    estimatedJackpot: string
-  ) {
-    this.gameName = gameName;
-    this.drawDate = new Date(drawDate);
-    this.winningNumbers = winningNumbers
-      .split("-")
-      .map((numStr) => Number(numStr));
-    this.jackpot = Utils.usdToNum(jackpot);
-    this.nextDrawDate = new Date(nextDrawDate);
-    this.estimatedJackpot = Utils.usdToNum(estimatedJackpot);
-  }
-}
-
-class PowerballDrawing extends Drawing {
-  ball: number;
-  bonus: number;
-
-  constructor(rawData: string[]) {
-    const gameName = "powerball";
-    const drawDate = rawData[0];
-    const winningNumbers = rawData[1];
-    const jackpot = rawData[2];
-    const ball = rawData[3];
-    const bonus = rawData[4];
-    const nextDrawDate = rawData[5];
-    const estimatedJackpot = rawData[6];
-    super(
-      gameName,
-      drawDate,
-      winningNumbers,
-      jackpot,
-      nextDrawDate,
-      estimatedJackpot
-    );
-    this.ball = Number(ball);
-    this.bonus = Number(bonus);
-  }
+  return new LuckyForLifeDrawing(drawArray);
 }
 
 class Drawings {
@@ -152,62 +29,29 @@ class Drawings {
     this.megabucksDoubler = rawData.megabucksdoubler;
     this.powerball = rawData.powerball;
   }
-  getData(
-    game:
-      | "luckyForLife"
-      | "massCash"
-      | "megaMillions"
-      | "megabucksDoubler"
-      | "powerball"
-  ) {
+  getData(game: GameNames) {
     return this[game].slice(1);
   }
-  getHeader(
-    game:
-      | "luckyForLife"
-      | "massCash"
-      | "megaMillions"
-      | "megabucksDoubler"
-      | "powerball"
-  ) {
+  getHeader(game: GameNames) {
     return this[game][0];
   }
 }
 
-function main() {
-  drawings
-    .getData("powerball")
-    .slice(-10)
-    .reverse()
-    .forEach(function (arr, index) {
-      const gameDraw = new PowerballDrawing(arr);
-      $("#drawings tbody tr:eq(" + index + ") td:eq(0) span").html(
-        gameDraw.drawDate.toDateString()
-      );
-      gameDraw.winningNumbers.forEach((num, idx) =>
-        $("#drawings tbody tr:eq(" + index + ") td:eq(" + (idx + 1) + ")").html(
-          num.toString().padStart(2, "0")
-        )
-      );
-      $("#drawings tbody tr:eq(" + index + ") td:eq(7) span").html(
-        Utils.numToUsd(gameDraw.jackpot)
-      );
-    });
-}
+/** functions */
 
 const drawings = new Drawings(DRAWINGS);
 
-function main2() {
+function main(gameName: GameNames) {
   drawings
-    .getData("megaMillions")
+    .getData(gameName)
     .slice(-10)
     .reverse()
-    .forEach(function (arr, index) {
-      const gameDraw = new PowerballDrawing(arr);
+    .forEach(function (drawArray, index) {
+      const gameDraw = getGameDrawing(gameName, drawArray);
       $("#drawings tbody tr:eq(" + index + ") td:eq(0) span").html(
         gameDraw.drawDate.toDateString()
       );
-      gameDraw.winningNumbers.forEach((num, idx) =>
+      gameDraw.winningNumbers.forEach((num: number, idx: number) =>
         $("#drawings tbody tr:eq(" + index + ") td:eq(" + (idx + 1) + ")").html(
           num.toString().padStart(2, "0")
         )
@@ -218,4 +62,8 @@ function main2() {
     });
 }
 
-$(main);
+function handler() {
+  main("luckyForLife");
+}
+
+$(handler);
