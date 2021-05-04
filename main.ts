@@ -64,7 +64,7 @@ const Utils = (function () {
         currency: "USD",
         notation: "compact",
         compactDisplay: "short",
-        minimumSignificantDigits: 3,
+        minimumFractionDigits: 0,
         maximumFractionDigits: 2,
       })
       .match(/^(\$\d+)(\.\d+)?([MB])$/);
@@ -179,12 +179,18 @@ function main() {
   drawings
     .getData("powerball")
     .slice(-10)
+    .reverse()
     .forEach(function (arr, index) {
       const gameDraw = new PowerballDrawing(arr);
-      $("tbody tr:eq(" + index + ") td:eq(0)").html(
+      $("#drawings tbody tr:eq(" + index + ") td:eq(0) span").html(
         gameDraw.drawDate.toDateString()
       );
-      $("tbody tr:eq(" + index + ") td:eq(2)").html(
+      gameDraw.winningNumbers.forEach((num, idx) =>
+        $("#drawings tbody tr:eq(" + index + ") td:eq(" + (idx + 1) + ")").html(
+          num.toString().padStart(2, "0")
+        )
+      );
+      $("#drawings tbody tr:eq(" + index + ") td:eq(7) span").html(
         Utils.numToUsd(gameDraw.jackpot)
       );
     });
