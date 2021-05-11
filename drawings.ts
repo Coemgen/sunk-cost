@@ -1,3 +1,5 @@
+declare const DRAWINGS: any;
+
 class Drawing {
   gameName: GameName;
   drawDate: Date;
@@ -21,23 +23,8 @@ class Drawing {
 }
 
 class Drawings {
-  luckyForLife: string[][];
-  massCash: string[][];
-  megaMillions: string[][];
-  megabucksDoubler: string[][];
-  powerball: string[][];
-  constructor(rawData: {
-    luckyforlife: string[][];
-    masscash: string[][];
-    megamillions: string[][];
-    megabucksdoubler: string[][];
-    powerball: string[][];
-  }) {
-    this.luckyForLife = rawData.luckyforlife;
-    this.massCash = rawData.masscash;
-    this.megaMillions = rawData.megamillions;
-    this.megabucksDoubler = rawData.megabucksdoubler;
-    this.powerball = rawData.powerball;
+  constructor(rawData) {
+    //         ["draw_date", "winning_num", "jackpot", "ball", "not_used", "next_draw_date", "estimated_jackpot"],
   }
   getData(game: GameName) {
     return this[game].slice(1);

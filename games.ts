@@ -1,3 +1,15 @@
+declare const GAMES: any;
+
+interface Game {
+  name: string;
+  id: string | number;
+  ball: string;
+  bonus: string;
+  price: number;
+  threshold: number;
+  match: any;
+}
+
 type GameName =
   | "luckyForLife"
   | "massCash"
@@ -29,10 +41,14 @@ class Game {
   }
 }
 
-const games = {
+const gamesObj = {
   luckyForLife: new Game("luckyForLife", [], "Lucky Ball", ""),
   massCash: new Game("massCash", [], "", ""),
   megaMillions: new Game("megaMillions", [], "Mega Ball", "Megaplier"),
   megabucksDoubler: new Game("megabucksDoubler", [], "", "ST Doubler"),
   powerball: new Game("powerball", [], "Power Ball", "Powerplay"),
 };
+
+class Games {
+  constructor(rawData: any) {}
+}

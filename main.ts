@@ -1,10 +1,10 @@
-declare const DRAWINGS: any;
-const drawings = new Drawings(DRAWINGS);
-
 function main(gameName: GameName) {
+  const games = new Games(GAMES);
+  const drawings = new Drawings(DRAWINGS);
+
   let ball: string;
   let bonus: string;
-  const game = games[gameName];
+  const game = gamesObj[gameName];
 
   $("#drawings thead tr th:eq(2)").html(game.ballText);
   $("#drawings thead tr th:eq(3)").html(game.bonusText);
