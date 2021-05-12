@@ -1,4 +1,4 @@
-function main(gameId: string) {
+function mainX(gameId: string) {
   const drawings = new Drawings(DRAWINGS);
   const gamesObj = gameUtils.set(GAMES);
 
@@ -89,8 +89,32 @@ function main(gameId: string) {
     });
 }
 
+const main = (function () {
+  function displayNavPills(gamesArr: string[], gamesObj: any) {
+    gamesArr.forEach((name) => gamesObj[name]);
+  }
+
+  return {
+    displayNavPills,
+  };
+})();
+
 function handler() {
-  main("lucky_for_life");
+  // const gamesObj = gameUtils.set(GAMES);
+  // const gamesArr = Object.keys(gamesObj);
+  // main.displayNavPills(gamesArr, gamesObj);
+  debugger;
+  $.getJSON("data/games.json", function (data) {
+    let items: string[] = [];
+    $.each(data, function (key: string, val) {
+      items.push("<li id='" + key + "'>" + val + "</li>");
+    });
+
+    $("<ul/>", {
+      class: "my-new-list",
+      html: items.join(""),
+    }).appendTo("body");
+  });
 }
 
 $(handler);
