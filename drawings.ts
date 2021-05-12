@@ -1,7 +1,7 @@
 declare const DRAWINGS: any;
 
 class Drawing {
-  gameName: GameName;
+  gameId: string;
   drawDate: Date;
   winningNumbers: number[];
   jackpot: number;
@@ -10,8 +10,8 @@ class Drawing {
   nextDrawDate: Date;
   estimatedJackpot: number;
 
-  constructor(gameName: GameName, rawData: string[]) {
-    this.gameName = gameName;
+  constructor(gameId: string, rawData: string[]) {
+    this.gameId = gameId;
     this.drawDate = new Date(rawData[0]);
     this.winningNumbers = rawData[1].split("-").map((numStr) => Number(numStr));
     this.jackpot = Utils.usdToNum(rawData[2]);
@@ -23,13 +23,12 @@ class Drawing {
 }
 
 class Drawings {
-  constructor(rawData) {
+  constructor(private rawData) {
     //         ["draw_date", "winning_num", "jackpot", "ball", "not_used", "next_draw_date", "estimated_jackpot"],
+    debugger;
   }
-  getData(game: GameName) {
-    return this[game].slice(1);
-  }
-  getHeader(game: GameName) {
-    return this[game][0];
+  getData(gameId: string) {
+    debugger;
+    return this.rawData[gameId];
   }
 }

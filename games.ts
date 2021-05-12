@@ -1,4 +1,4 @@
-declare const GAMES: any;
+declare const GAMES: string[][][];
 
 interface Game {
   name: string;
@@ -10,45 +10,29 @@ interface Game {
   match: any;
 }
 
-type GameName =
-  | "luckyForLife"
-  | "massCash"
-  | "megaMillions"
-  | "megabucksDoubler"
-  | "powerball";
-
-class Game {
-  name: GameName;
-  rules: string[];
-  ballText: string;
-  bonusText: string;
-  constructor(
-    name: GameName,
-    rules: string[],
-    ballText: string,
-    bonusText: string
-  ) {
-    this.name = name;
-    this.rules = rules;
-    this.ballText = ballText;
-    this.bonusText = bonusText;
+const gameUtils = (function () {
+  function set(GAMES: string[][][]) {
+    let gamesObj: any = {};
+    let gameObj: any = {};
+    GAMES.forEach((gameArr) => {
+      gameObj = {};
+      gameObj.match = {};
+      gameArr.forEach((ele: string[]) => {
+        let key = ele[0];
+        let subKey;
+        if (key === "match") {
+          subKey = ele[1];
+          gameObj[key][subKey] = ele[2];
+        } else {
+          gameObj[key] = ele[1];
+        }
+      });
+      gamesObj[gameObj.identifier] = gameObj;
+    });
+    return gamesObj;
   }
-  getBallText() {
-    this.ballText;
-  }
-  getBonusText() {
-    this.bonusText;
-  }
-}
 
-const gamesObj = {
-  luckyForLife: new Game("luckyForLife", [], "Lucky Ball", ""),
-  massCash: new Game("massCash", [], "", ""),
-  megaMillions: new Game("megaMillions", [], "Mega Ball", "Megaplier"),
-  megabucksDoubler: new Game("megabucksDoubler", [], "", "ST Doubler"),
-  powerball: new Game("powerball", [], "Power Ball", "Powerplay"),
-};
-
-class Games {
-  constructor(rawData: any) {}
-}
+  return Object.freeze({
+    set,
+  });
+})();

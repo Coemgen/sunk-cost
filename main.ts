@@ -1,31 +1,31 @@
-function main(gameName: GameName) {
-  const games = new Games(GAMES);
+function main(gameId: string) {
   const drawings = new Drawings(DRAWINGS);
+  const gamesObj = gameUtils.set(GAMES);
 
   let ball: string;
   let bonus: string;
-  const game = gamesObj[gameName];
+  const game = gamesObj[gameId];
 
-  $("#drawings thead tr th:eq(2)").html(game.ballText);
-  $("#drawings thead tr th:eq(3)").html(game.bonusText);
+  $("#drawings thead tr th:eq(2)").html(game.ball);
+  $("#drawings thead tr th:eq(3)").html(game.bonus);
 
-  if (gameName === "massCash" || gameName === "megabucksDoubler") {
+  if (gameId === "mass_cash" || gameId === "megabucks_doubler") {
     $("#drawings thead tr th.ball").attr("hidden", "hidden");
   } else {
     $("#drawings thead tr th.ball").removeAttr("hidden");
   }
 
   if (
-    gameName === "massCash" ||
-    gameName === "luckyForLife" ||
-    gameName === "megabucksDoubler"
+    gameId === "mass_cash" ||
+    gameId === "lucky_for_life" ||
+    gameId === "megabucks_doubler"
   ) {
     $("#drawings thead tr th.bonus").attr("hidden", "hidden");
   } else {
     $("#drawings thead tr th.bonus").removeAttr("hidden");
   }
 
-  if (gameName === "megabucksDoubler") {
+  if (gameId === "megabucks_doubler") {
     $("#drawings thead tr th:eq(1)").attr("colspan", 6);
   } else {
     $("#drawings thead tr th:eq(1)").attr("colspan", 5);
@@ -33,17 +33,17 @@ function main(gameName: GameName) {
 
   game.bonusText;
   drawings
-    .getData(gameName)
+    .getData(gameId)
     .slice(-10)
     .reverse()
     .forEach(function (drawArray, index) {
-      const gameDraw = new Drawing(gameName, drawArray);
+      const gameDraw = new Drawing(gameId, drawArray);
       $("#drawings tbody tr:eq(" + index + ") td.num").empty();
       $("#drawings tbody tr:eq(" + index + ") td:eq(0) span").html(
         gameDraw.drawDate.toDateString()
       );
 
-      if (gameName === "massCash" || gameName === "megabucksDoubler") {
+      if (gameId === "mass_cash" || gameId === "megabucks_doubler") {
         $("#drawings tbody tr:eq(" + index + ") td.ball").attr(
           "hidden",
           "hidden"
@@ -53,9 +53,9 @@ function main(gameName: GameName) {
       }
 
       if (
-        gameName === "massCash" ||
-        gameName === "luckyForLife" ||
-        gameName === "megabucksDoubler"
+        gameId === "mass_cash" ||
+        gameId === "lucky_for_life" ||
+        gameId === "megabucks_doubler"
       ) {
         $("#drawings tbody tr:eq(" + index + ") td.bonus").attr(
           "hidden",
@@ -65,7 +65,7 @@ function main(gameName: GameName) {
         $("#drawings tbody tr:eq(" + index + ") td.bonus").removeAttr("hidden");
       }
 
-      if (gameName === "megabucksDoubler") {
+      if (gameId === "megabucks_doubler") {
         $("#drawings tbody tr:eq(" + index + ") td:eq(6)").removeAttr("hidden");
       } else {
         $("#drawings tbody tr:eq(" + index + ") td:eq(6)").attr(
@@ -90,7 +90,7 @@ function main(gameName: GameName) {
 }
 
 function handler() {
-  main("luckyForLife");
+  main("lucky_for_life");
 }
 
 $(handler);
